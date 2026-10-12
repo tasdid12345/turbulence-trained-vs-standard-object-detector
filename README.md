@@ -24,6 +24,38 @@ python analysis.py
 ## Results
 Results are written to `results.json` (and a chart to `figures/`).
 
+## Results (latest run)
+
+On sklearn digits scenes, a standard detector trained on clean frames with no turbulence handling reached 77% mean detection rate (IoU≥0.5) over turbulence levels 0-4, versus 88% for the degraded-frame, CV-tuned variant; at the strongest level, 54% vs 74%.
+
+| Metric | Value |
+|---|---|
+| baseline_score | 0.7696 |
+| baseline_score_std | 0.0005543 |
+| baseline_rate_strongest_level | 0.5422 |
+| baseline_rate_strongest_level_std | 0.0101 |
+| baseline_rate_level0 | 0.8985 |
+| baseline_rate_level1 | 0.9141 |
+| baseline_rate_level2 | 0.8067 |
+| baseline_rate_level3 | 0.6867 |
+| baseline_rate_level4 | 0.5422 |
+| improved_score | 0.8801 |
+| improved_score_std | 0.002416 |
+| improved_rate_strongest_level | 0.7415 |
+| improved_rate_strongest_level_std | 0.008182 |
+| improved_rate_level0 | 0.9178 |
+| improved_rate_level1 | 0.9467 |
+| improved_rate_level2 | 0.9385 |
+| improved_rate_level3 | 0.8563 |
+| improved_rate_level4 | 0.7415 |
+| improvement | 0.1105 |
+| improvement_strongest_level | 0.1993 |
+| chance_rate_random_window | 0.04524 |
+
+Run on 2026-10-12. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: Synthetic scenes and simulated turbulence; results may not transfer to real imagery. Improved model differs from baseline in both training-data degradation and CV tuning (tuned params: {'min_child_samples': 50, 'n_estimators': 200, 'num_leaves': 31}), so gains are not attributable to augmentation alone. Test scenes are fixed across seeds; std reflects LightGBM seed only. Stride-4 windows on 16x16 boxes. Per-level metrics are seed means.
+
 ## Reference
 
 This project is motivated by the following paper:
