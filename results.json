@@ -1,0 +1,41 @@
+{
+  "question": "Can a sliding-window detector trained on turbulence-degraded frames keep a higher detection rate than the same detector trained on clean frames as simulated turbulence strength increases?",
+  "method": "Digits pasted on noisy 48x48 scenes; turbulence = smooth random warp + Gaussian blur at levels 0-4; HOG-style features + LightGBM patch classifier in a sliding window (stride 4); detection = top-scoring window has IoU>=0.5. Baseline trained on clean scenes, improved on turbulence-degraded scenes with CV-tuned classifier. Mean of seeds 42-44.",
+  "dataset": {
+    "name": "sklearn digits (synthetic surveillance scenes)",
+    "source_url": "https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html",
+    "n_rows": 1797,
+    "n_train": 1347,
+    "n_test": 450,
+    "same_as_paper": false,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "detection rate (IoU>=0.5), mean over turbulence levels 0-4",
+  "higher_is_better": true,
+  "baseline": "Sliding-window detector (HOG-style features + default LightGBM patch classifier) trained on clean scenes only.",
+  "improved": "Same detector and number of training scenes, but scenes are degraded with turbulence levels 0-4 and LightGBM hyper-parameters are tuned by grouped 3-fold CV on the training set.",
+  "metrics": {
+    "baseline_score": 0.7696296296296296,
+    "baseline_score_std": 0.0005543196128553311,
+    "baseline_rate_strongest_level": 0.5422222222222223,
+    "baseline_rate_strongest_level_std": 0.010102356812582132,
+    "baseline_rate_level0": 0.8985185185185186,
+    "baseline_rate_level1": 0.9140740740740739,
+    "baseline_rate_level2": 0.8066666666666666,
+    "baseline_rate_level3": 0.6866666666666666,
+    "baseline_rate_level4": 0.5422222222222223,
+    "improved_score": 0.8801481481481481,
+    "improved_score_std": 0.0024162231748592,
+    "improved_rate_strongest_level": 0.7414814814814815,
+    "improved_rate_strongest_level_std": 0.008181748901620156,
+    "improved_rate_level0": 0.9177777777777778,
+    "improved_rate_level1": 0.9466666666666667,
+    "improved_rate_level2": 0.9385185185185185,
+    "improved_rate_level3": 0.8562962962962963,
+    "improved_rate_level4": 0.7414814814814815,
+    "improvement": 0.11051851851851857,
+    "improvement_strongest_level": 0.19925925925925925,
+    "chance_rate_random_window": 0.0452400548696845
+  },
+  "notes": "Synthetic scenes and simulated turbulence; results may not transfer to real imagery. Improved model differs from baseline in both training-data degradation and CV tuning (tuned params: {'min_child_samples': 50, 'n_estimators': 200, 'num_leaves': 31}), so gains are not attributable to augmentation alone. Test scenes are fixed across seeds; std reflects LightGBM seed only. Stride-4 windows on 16x16 boxes. Per-level metrics are seed means."
+}
